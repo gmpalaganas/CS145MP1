@@ -7,7 +7,7 @@ import mp1.util.MessageUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOPtionPane;
+import javax.swing.JOptionPane;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -39,11 +39,11 @@ public class ClientListenerThread extends Thread{
             } else if(cmd_string.equals("DISPLAY")){
                 client_frame.addMessage(param_string);                
             } else if(cmd_string.equals("POP")){
-                JOPtionPane.showMessageDialog(param_string);
+                JOptionPane.showMessageDialog(null,param_string);
             }else if(cmd_string.equals("UPDATE")){
+                @SuppressWarnings("unchecked")
                 List<ClientData> holder = (ArrayList<ClientData>)conn_handler.getObject();
-                for(ClientData data: holder)
-                    System.out.println(data.getName());
+               
                 client_frame.updateUserList(holder);
             }
 

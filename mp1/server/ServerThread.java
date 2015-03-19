@@ -93,15 +93,16 @@ public class ServerThread extends Thread{
 							
 							client_data.setName(param_string);
 							cur_connections.put(param_string,tmp);
-							sendToAll("DISPLAY Server Message: " + old_name + " has changed name to " + param_string);
 							updateUserToAll(clients);
+							sendToAll("DISPLAY Server Message: " + old_name + " has changed name to " + param_string);
+							
 
 						} else{
 							conn_handler.sendMessage("DISPLAY Server Message: " + param_string + " is not a valid name ");
 						}
 					
 					} else if(cmd_string.equals("/changestatus")){
-						if(&& !param_string.equals(cmd_string)){
+						if(!param_string.equals(cmd_string)){
 							String status = param_string;
 							client_data.setStatus(status);
 							updateUserToAll(clients);	
@@ -122,16 +123,16 @@ public class ServerThread extends Thread{
 						String help = "POP /help - displays a list of commands\n";
 						help += "/emoticons - displays a list of available emoticons\n";
 						help += "/chanename <name> - changes you current name\n";
-						help += "/changestatus <status> - changes you current name\n";
+						help += "/changestatus <status> - changes you current status\n";
 						help += "/whisper <user> <message> - sends a private message to user\n";
 						help += "/quit - exits the client";
 
 						conn_handler.sendMessage(help);
 
-					} else if(cmd_string.equals("/emoticons"){
+					} else if(cmd_string.equals("/emoticons")){
 						String emoticons = "POP ";
-						for(String k : emoticon_map.keyValuess())
-							emoticons += k + " - " + emoticon_map.get(k);
+						for(String k : emoticon_map.keySet())
+							emoticons += k + " - " + emoticon_map.get(k) + "\n";
 
 						conn_handler.sendMessage(emoticons);
 

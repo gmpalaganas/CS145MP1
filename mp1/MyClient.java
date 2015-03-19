@@ -2,6 +2,7 @@ package mp1;
 
 import java.io.*;
 import java.net.*;
+import javax.swing.JOptionPane;
 
 import mp1.client.*;
 import mp1.connection.ConnectionHandler;
@@ -12,8 +13,10 @@ public class MyClient{
 	public static void main(String args[]){
 
 		try {
+
+			String ip = JOptionPane.showInputDialog("Input IP address");
 			
-			Socket s = new Socket("127.0.0.1", 8888);
+			Socket s = new Socket(ip, 8888);
 			ConnectionHandler conn_handler = new ConnectionHandler(s);
 
 			ClientFrame c_frame = new ClientFrame("Chat Box");
