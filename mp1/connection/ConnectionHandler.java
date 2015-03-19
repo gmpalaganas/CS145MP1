@@ -42,9 +42,10 @@ public class ConnectionHandler {
 		boolean ret = true; 
 
 		try{
-			p_writer.println(msg);
-			p_writer.flush();
-
+			synchronized(p_writer){
+				p_writer.println(msg);
+				p_writer.flush();
+			}
 		}catch(Exception e){
 			ret = false;
 		}
@@ -57,19 +58,23 @@ public class ConnectionHandler {
 		InetAddress ip = socket.getInetAddress();
 
 		try{
-			String inc =  b_reader.readLine();
-			ret = inc;
 
-			if(b_reader.ready())
-				ret += "\n";
-
-			while(b_reader.ready()){
-				inc =  b_reader.readLine();
-				ret += inc;
+			synchronized(b_reader){
+				String inc =  b_reader.readLine();
+				ret = inc;
 
 				if(b_reader.ready())
-				ret += "\n";
+					ret += "\n";
+
+				while(b_reader.ready()){
+					inc =  b_reader.readLine();
+					ret += inc;
+
+					if(b_reader.ready())
+					ret += "\n";
+				}
 			}
+			
 		}catch(IOException e){
 			System.out.println("Unable read message from " + ip +  " :(");
          	e.printStackTrace();
@@ -83,9 +88,11 @@ public class ConnectionHandler {
 		boolean ret = true;
 
 		try{
-			obj_out.reset();
-            obj_out.writeObject(obj);   	            
-        	obj_out.flush();
+			synchronized(obj_out){
+				obj_out.reset();
+	            obj_out.writeObject(obj);   	            
+	        	obj_out.flush();
+	        }
         }catch (IOException e){
 	        e.printStackTrace();
 	        ret = false;
@@ -98,7 +105,9 @@ public class ConnectionHandler {
 		Object ret = null;
 		
 		try{
-			ret = obj_in.readObject();
+			synchronized(obj_in){
+				ret = obj_in.readObject();	
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

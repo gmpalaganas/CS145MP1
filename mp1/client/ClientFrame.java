@@ -42,10 +42,13 @@ public class ClientFrame extends JFrame{
 	private Border text_border;
 
 
-	public ClientFrame(String title){
+	public ClientFrame(String title) throws IOException, FontFormatException{
 		super(title);
-
+		
+		Font font = Font.createFont(Font.TRUETYPE_FONT, new File("mp1/client/fonts/unifont-7.0.06.ttf"));
+		font = font.deriveFont(16.0f);
 		messages_box = new JTextArea();
+		messages_box.setFont(font);
 		messages_box.setEditable(false);
 		messages_box.setWrapStyleWord(true);
 		DefaultCaret caret = (DefaultCaret)messages_box.getCaret();
@@ -53,10 +56,12 @@ public class ClientFrame extends JFrame{
 
 		users_box = new JTextArea();
 		users_box.setEditable(false);
+		users_box.setFont(font);
 		users_box.setWrapStyleWord(true);
 
 		chat_box = new JTextField();
-
+		chat_box.setFont(font);
+		
 		send_button = new JButton(SEND_BUTTON_TEXT);
 		messages_label = new JLabel(WINDOW_TEXT);
 		users_label = new JLabel(USER_PANEL_TEXT);
@@ -131,7 +136,7 @@ public class ClientFrame extends JFrame{
 	public void updateUserList(List<ClientData> users){
 		users_box.setText("");
 		for(ClientData user: users){
-			String status = (user.getStatus().equals(""))?"":"-" + user.getStatus();
+			String status = (user.getStatus().equals(""))?"":" - " + user.getStatus();
 			users_box.append(user.getName()+ status +"\n");
 		}
 	}

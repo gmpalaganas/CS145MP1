@@ -21,14 +21,15 @@ public class ServerThread extends Thread{
 		this.clients = list;
 		this.emoticon_map = new HashMap<String,String>();
 		init_emoticons();
+		//conn_handler.sendMessage("POP Welcome to the Chat Room! type /help to see commands and /emoticons to see emoticon codes");			
 	}
+	
 
 	public void init_emoticons(){
-		emoticon_map.put(":wut:","ಠ_ಠ");
+		emoticon_map.put(":wut:","\u0CA0_\u0CA0");
 		emoticon_map.put(":returntable:","┬──┬ ノ( ゜-゜ノ)");
 		emoticon_map.put(":shrug:","¯\\_(ツ)_/¯");
 		emoticon_map.put(":tableflip:","(╯°□°）╯︵ ┻━┻");
-		emoticon_map.put(":lennyface:","( ͡° ͜ʖ ͡°) ");
 	}
 
 	public void run(){
@@ -171,12 +172,15 @@ public class ServerThread extends Thread{
 				sendToAll("UPDATE");
 				Thread.sleep(200);
 				sendObjectToAll(list);
-				Thread.sleep(200);	
+				Thread.sleep(200);
 			}
-			
-		}catch(InterruptedException e){
-			//e.printStackTrace();
+		
+		} catch(InterruptedException e){
+
 		}
+		
+
+			
 	}
 
 
