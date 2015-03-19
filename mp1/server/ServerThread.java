@@ -150,27 +150,32 @@ public class ServerThread extends Thread{
 	}
 
 	public void sendToAll(String msg){
-	
-		for(ConnectionHandler con: cur_connections.values())
-			con.sendMessage(msg);
+		synchronized(cur_connections){
+			for(ConnectionHandler con: cur_connections.values())
+				con.sendMessage(msg);
+		}	
 	
 	}
 
 	public void sendObjectToAll(Object obj){
+		synchronized(cur_connections){
 		for(ConnectionHandler con: cur_connections.values())
 			con.sendObject(obj);
+		}
 	}
 
 	public void updateUserToAll(List<ClientData> list){
 		try{
-			for(ClientData data: clients)
-                    System.out.println(data.getName());
-			sendToAll("UPDATE");
-			Thread.sleep(500);
-			sendObjectToAll(list);
-			Thread.sleep(500);
+			synchronized(list){
+				Thread.sleep(200);
+				sendToAll("UPDATE");
+				Thread.sleep(200);
+				sendObjectToAll(list);
+				Thread.sleep(200);	
+			}
+			
 		}catch(InterruptedException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
