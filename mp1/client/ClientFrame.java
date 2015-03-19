@@ -130,9 +130,9 @@ public class ClientFrame extends JFrame{
 
 	public void updateUserList(List<ClientData> users){
 		users_box.setText("");
-
 		for(ClientData user: users){
-			users_box.append(user.getName()+ " - " + user.getStatus());
+			String status = (user.getStatus().equals(""))?"":"-" + user.getStatus();
+			users_box.append(user.getName()+ status +"\n");
 		}
 	}
 

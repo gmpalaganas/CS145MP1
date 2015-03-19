@@ -83,9 +83,9 @@ public class ConnectionHandler {
 		boolean ret = true;
 
 		try{
-
-            obj_out.writeObject(obj);               
-        
+			obj_out.reset();
+            obj_out.writeObject(obj);   	            
+        	obj_out.flush();
         }catch (IOException e){
 	        e.printStackTrace();
 	        ret = false;

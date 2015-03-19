@@ -12,11 +12,13 @@ public class ServerThread extends Thread{
 	private Map<String,ConnectionHandler> cur_connections;
 	private ClientData client_data;
 	private Map<String,String> emoticon_map;
+	private List<ClientData> clients;
 
-	public ServerThread(ConnectionHandler myCon, Map<String,ConnectionHandler> cur, ClientData client){
+	public ServerThread(ConnectionHandler myCon, Map<String,ConnectionHandler> cur, List<ClientData> list,ClientData client){
 		this.conn_handler = myCon;
 		this.cur_connections = cur;
 		this.client_data = client;
+		this.clients = list;
 		this.emoticon_map = new HashMap<String,String>();
 		init_emoticons();
 	}
@@ -61,7 +63,7 @@ public class ServerThread extends Thread{
 							msg = msg.replace(str,emoticon_map.get(str));
 					}
 
-					sendToAll(client_data.getName() +": " + msg);
+					sendToAll("DISPLAY " + client_data.getName() +": " + msg);
 					e_matches.clear();
 				}
 
@@ -75,39 +77,66 @@ public class ServerThread extends Thread{
 							isRunning = false;
 							conn_handler.sendMessage("END");
 							cur_connections.remove(client_data.getName());
-							sendToAll("Server Message: " + client_data.getName() + " has disconnected");
+							clients.remove(client_data);
+							sendToAll("DISPLAY Server Message: " + client_data.getName() + " has disconnected");
+							Thread.sleep(500);
+							updateUserToAll(clients);
 						} else{
-							conn_handler.sendMessage("Server Message: usage /quit");
+							conn_handler.sendMessage("DISPLAY Server Message: usage /quit");
 						}
 					
 					} else if(cmd_string.equals("/changename")){
 						
-						if(param_string.indexOf(" ") == -1){
+						if(param_string.indexOf(" ") == -1 && !param_string.equals(cmd_string)){
 							ConnectionHandler tmp = cur_connections.remove(client_data.getName());
 							String old_name = client_data.getName();
 							
 							client_data.setName(param_string);
 							cur_connections.put(param_string,tmp);
-							sendToAll("Server Message: " + old_name + " has changed name to " + param_string);
+							sendToAll("DISPLAY Server Message: " + old_name + " has changed name to " + param_string);
+							updateUserToAll(clients);
+
 						} else{
-							conn_handler.sendMessage("Server Message: " + param_string + " is not a valid name ");
+							conn_handler.sendMessage("DISPLAY Server Message: " + param_string + " is not a valid name ");
 						}
 					
 					} else if(cmd_string.equals("/changestatus")){
-
-						String status = param_string;
-						client_data.setStatus(status);
+						if(&& !param_string.equals(cmd_string)){
+							String status = param_string;
+							client_data.setStatus(status);
+							updateUserToAll(clients);	
+						}else{
+							conn_handler.sendMessage("DISPLAY Server Message: " + param_string + " is not a valid status ");
+						}
 
 					} else if(cmd_string.equals("/whisper")){
 
 						String send_to = MessageUtil.extractCommand(param_string);
 						String send_msg = MessageUtil.extractParameter(cmd_string + " " + send_to, param_string);
-						send_msg = "[" + client_data.getName() + " whisphers ]: " + send_msg;
+						send_msg = "DISPLAY [" + client_data.getName() + " whisphers ]: " + send_msg;
 						ConnectionHandler receiver = cur_connections.get(send_to);
 						receiver.sendMessage(send_msg);
 
-					} else{
-						conn_handler.sendMessage("Server Message: Invalid command " + cmd_string);
+					} else if(cmd_string.equals("/help")){
+
+						String help = "POP /help - displays a list of commands\n";
+						help += "/emoticons - displays a list of available emoticons\n";
+						help += "/chanename <name> - changes you current name\n";
+						help += "/changestatus <status> - changes you current name\n";
+						help += "/whisper <user> <message> - sends a private message to user\n";
+						help += "/quit - exits the client";
+
+						conn_handler.sendMessage(help);
+
+					} else if(cmd_string.equals("/emoticons"){
+						String emoticons = "POP ";
+						for(String k : emoticon_map.keyValuess())
+							emoticons += k + " - " + emoticon_map.get(k);
+
+						conn_handler.sendMessage(emoticons);
+
+					}else{
+						conn_handler.sendMessage("DISPLAY Server Message: Invalid command " + cmd_string);
 					}
 				}
 		  		
@@ -124,6 +153,24 @@ public class ServerThread extends Thread{
 		for(ConnectionHandler con: cur_connections.values())
 			con.sendMessage(msg);
 	
+	}
+
+	public void sendObjectToAll(Object obj){
+		for(ConnectionHandler con: cur_connections.values())
+			con.sendObject(obj);
+	}
+
+	public void updateUserToAll(List<ClientData> list){
+		try{
+			for(ClientData data: clients)
+                    System.out.println(data.getName());
+			sendToAll("UPDATE");
+			Thread.sleep(500);
+			sendObjectToAll(list);
+			Thread.sleep(500);
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 
 

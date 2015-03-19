@@ -30,9 +30,9 @@ public class MyServer{
 				
 				ClientData data = new ClientData(client_name, status, ip.toString());
 				clients.add(data);
-
-				ServerThread s_thread = new ServerThread(connection,cur_connections,data);
-				s_thread.sendToAll("Server message: " + client_name + " has connected!");
+				ServerThread s_thread = new ServerThread(connection,cur_connections,clients,data);
+				s_thread.updateUserToAll(clients);
+				s_thread.sendToAll("DISPLAY Server message: " + client_name + " has connected!");
 				s_thread.start();
 				
 		    
