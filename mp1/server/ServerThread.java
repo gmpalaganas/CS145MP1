@@ -116,8 +116,12 @@ public class ServerThread extends Thread{
 						String send_to = MessageUtil.extractCommand(param_string);
 						String send_msg = MessageUtil.extractParameter(cmd_string + " " + send_to, param_string);
 						send_msg = "DISPLAY [" + client_data.getName() + " whisphers ]: " + send_msg;
-						ConnectionHandler receiver = cur_connections.get(send_to);
-						receiver.sendMessage(send_msg);
+						if(cur_connections.containsKey(send_to)){
+							ConnectionHandler receiver = cur_connections.get(send_to);
+							receiver.sendMessage(send_msg);	
+						}else{
+							conn_handler.sendMessage("DISPLAY Server Message: User " + send_to  + " does not exist");
+						}
 
 					} else if(cmd_string.equals("/help")){
 
