@@ -1,8 +1,8 @@
-package mp1.client;
+package chat.client;
 
 import java.awt.*;
 import java.awt.event.*;
-import mp1.connection.ConnectionHandler;
+import chat.connection.ConnectionHandler;
 
 public class ClientSendListener implements ActionListener{
 

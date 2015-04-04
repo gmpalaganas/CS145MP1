@@ -1,4 +1,4 @@
-package mp1.util;
+package chat.util;
 
 import java.io.*;
 

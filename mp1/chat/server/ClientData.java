@@ -1,4 +1,4 @@
-package mp1.server;
+package chat.server;
 
 import java.io.*;
 

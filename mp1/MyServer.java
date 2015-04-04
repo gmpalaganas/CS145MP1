@@ -2,8 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import mp1.server.*;
-import mp1.connection.ConnectionHandler;
+import chat.server.*;
+import chat.connection.ConnectionHandler;
 
 public class MyServer{
 

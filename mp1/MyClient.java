@@ -2,8 +2,8 @@ import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
 
-import mp1.client.*;
-import mp1.connection.ConnectionHandler;
+import chat.client.*;
+import chat.connection.ConnectionHandler;
 
 
 public class MyClient{

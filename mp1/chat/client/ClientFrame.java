@@ -1,4 +1,4 @@
-package mp1.client;
+package chat.client;
 
 import java.io.*;
 import java.util.*;
@@ -11,7 +11,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 
-import mp1.server.ClientData;
+import chat.server.ClientData;
 
 public class ClientFrame extends JFrame{
 

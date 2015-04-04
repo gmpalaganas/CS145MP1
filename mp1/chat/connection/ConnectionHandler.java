@@ -1,4 +1,4 @@
-package mp1.connection;
+package chat.connection;
 
 import java.io.*;
 import java.net.*;

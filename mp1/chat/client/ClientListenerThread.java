@@ -1,8 +1,8 @@
-package mp1.client;
+package chat.client;
 
-import mp1.server.ClientData;
-import mp1.connection.ConnectionHandler;
-import mp1.util.MessageUtil;
+import chat.server.ClientData;
+import chat.connection.ConnectionHandler;
+import chat.util.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
