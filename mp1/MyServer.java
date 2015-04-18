@@ -5,6 +5,7 @@ import java.util.*;
 import chat.server.*;
 import chat.connection.ConnectionHandler;
 
+//Server Must be Open for the project to work
 public class MyServer{
 
 	public static void main(String args[]){
